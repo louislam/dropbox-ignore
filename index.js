@@ -1,41 +1,66 @@
 #!/usr/bin/env node
-const { exec } = require("child_process");
-const fs = require('fs');
+const childProcess = require("child_process");
+const fs = require("fs");
+const path = require("path");
 
-(async () => {
-  try {
+try {
     const cwd = process.cwd();
-    const modulesPath = cwd + '/node_modules';
+    const modulesPath = path.join(cwd, "node_modules");
 
     // check if node_modules exists
     const nodeModulesExist = fs.existsSync(modulesPath);
     if (!nodeModulesExist) {
-      throw new Error(`A node_modules directory does not exist in this location - ${cwd}`)
+        throw new Error(`A node_modules directory does not exist in this location - ${cwd}`);
     }
 
     // shell command
     const platform = process.platform;
-    const command = (
-      platform === "win32"
-        ? `Set-Content -Path '${modulesPath}' -Stream com.dropbox.ignored -Value 1`
-        : platform === "darwin"
-          ? `xattr -w com.dropbox.ignored 1 ${modulesPath.replace(" ", "\\ ")}`
-          : `attr -s com.dropbox.ignored -V 1 ${modulesPath}`
-    );
+    let command;
+    let args;
+
+    if (platform === "win32") {
+        command = "powershell";
+        args = [
+            "Set-Content",
+            "-Path",
+            `"${modulesPath}"`,
+            "-Stream",
+            "com.dropbox.ignored",
+            "-Value",
+            1,
+        ];
+    } else if (platform === "darwin") {
+        command = "xattr";
+        args = [
+            "-w",
+            "com.dropbox.ignored",
+            "1",
+            modulesPath.replace(" ", "\\ "),
+        ];
+    } else {
+        command = "attr";
+        args = [
+            "-s",
+            "com.dropbox.ignored",
+            "-V",
+            "1",
+            modulesPath,
+        ];
+    }
 
     // execute shell command
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        throw error;
-      }
-      if (stderr) {
-        throw stderr;
-      }
-      
-      console.log("Dropbox is now ignoring node_modules.");
+    let res = childProcess.spawnSync(command, args, {
+        windowsVerbatimArguments: false,
     });
-    
-  } catch (error) {
+
+    let error = res.stderr.toString("utf-8");
+
+    if (error) {
+        throw new Error(error);
+    } else {
+        console.log("Dropbox is now ignoring node_modules.");
+    }
+
+} catch (error) {
     console.log(`Error: ${error.message}`);
-  }
-})();
+}

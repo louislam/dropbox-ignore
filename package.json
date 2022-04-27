@@ -1,6 +1,6 @@
 {
-  "name": "dropbox-ignore-node_modules",
-  "version": "1.0.3",
+  "name": "@louislam/dropbox-ignore-node_modules",
+  "version": "2.0.0",
   "description": "This package will tell Dropbox to ignore the node_modules directory inside your project.",
   "main": "index.js",
   "author": "Trent Mackness",
@@ -24,5 +24,8 @@
     "node_modules",
     "cli",
     "nosync"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^8.14.0"
+  }
 }
