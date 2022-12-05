@@ -9,7 +9,7 @@ As per [Dropbox Documentation](https://help.dropbox.com/en-us/files-folders/rest
 Install package globally.
 
 ```bash
-npm i dropbox-ignore-node_modules -g
+npm install @louislam/dropbox-ignore-node_modules -g
 ```
 
 Navigate to the working directory that contains your NodeJS project with the node_modules directory. Then you can run the this script.
@@ -17,7 +17,7 @@ Navigate to the working directory that contains your NodeJS project with the nod
 You may use the command `dropignore` or `di` for short.
 
 ```bash
-cd ~/Dropbox/node/project
+cd C:\Dropbox\my-project
 di
 ```
 
