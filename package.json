@@ -14,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tmackness/dropbox-ignore-node_modules.git"
+    "url": "https://github.com/louislam/dropbox-ignore-node_modules.git"
   },
   "bugs": {
-    "url": "https://github.com/tmackness/dropbox-ignore-node_modules/issues"
+    "url": "https://github.com/louislam/dropbox-ignore-node_modules/issues"
   },
   "keywords": [
     "dropbox",

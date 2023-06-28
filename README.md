@@ -1,5 +1,7 @@
 # Dropbox Ignore node_modules
 
+It is a fork of https://github.com/tmackness/dropbox-ignore-node_modules.
+
 This NodeJS script works as a CLI that tells Dropbox to ignore the node_modules directory.
 
 As per [Dropbox Documentation](https://help.dropbox.com/en-us/files-folders/restore-delete/ignored-files) you can see the simple command used to do this.
@@ -21,6 +23,14 @@ cd C:\Dropbox\my-project
 di
 ```
 
+## Advanced Usage
+
+```
+Usage: di [status|ignore|reset] [folder]
+Default folder: node_modules
+Default action: ignore
+```
+
 ## Notes
 
-Should work with Windows, MacOS and Linux, however, only tested with MacOS.
+Tested on Windows only. 
