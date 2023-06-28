@@ -3,6 +3,7 @@
 const childProcess = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const commandExistsSync = require("command-exists").sync;
 
 try {
     const cwd = process.cwd();
@@ -46,14 +47,13 @@ function status(modulesPath) {
     let args;
 
     if (platform === "win32") {
-        command = "powershell";
-        args = [
+        let { command, args } = powershell([
             "Get-Content",
             "-Path",
             `"${modulesPath}"`,
             "-Stream",
             "com.dropbox.ignored",
-        ];
+        ]);
 
         // execute shell command
         let res = childProcess.spawnSync(command, args, {
@@ -97,6 +97,30 @@ function status(modulesPath) {
     }
 }
 
+/**
+ * Use Powershell 7 if available
+ * @param args
+ * @returns {{args: *[], command: string}}
+ */
+function powershell(args) {
+    let command;
+
+    if (commandExistsSync("pwsh")) {
+        command = "pwsh";
+        args = [
+            "-Command",
+            ...args
+        ];
+    } else {
+        command = "powershell";
+    }
+
+    return {
+        command,
+        args
+    };
+}
+
 function ignore(modulesPath) {
     checkExist(modulesPath);
 
@@ -106,8 +130,8 @@ function ignore(modulesPath) {
     let args;
 
     if (platform === "win32") {
-        command = "powershell";
-        args = [
+
+        let p = powershell([
             "Set-Content",
             "-Path",
             `"${modulesPath}"`,
@@ -115,7 +139,11 @@ function ignore(modulesPath) {
             "com.dropbox.ignored",
             "-Value",
             1,
-        ];
+        ]);
+
+        command = p.command;
+        args = p.args;
+
     } else if (platform === "darwin") {
         command = "xattr";
         args = [
@@ -158,8 +186,8 @@ function reset(modulesPath) {
     let args;
 
     if (platform === "win32") {
-        command = "powershell";
-        args = [
+
+        let p = powershell([
             "Set-Content",
             "-Path",
             `"${modulesPath}"`,
@@ -167,7 +195,10 @@ function reset(modulesPath) {
             "com.dropbox.ignored",
             "-Value",
             0,
-        ];
+        ]);
+
+        command = p.command;
+        args = p.args;
     } else if (platform === "darwin") {
         command = "xattr";
         args = [
@@ -190,6 +221,7 @@ function reset(modulesPath) {
     // execute shell command
     let res = childProcess.spawnSync(command, args, {
         windowsVerbatimArguments: false,
+        shell: shell,
     });
 
     let error = res.stderr.toString("utf-8");
