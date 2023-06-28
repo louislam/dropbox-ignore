@@ -39,7 +39,7 @@ try {
 }
 
 function status(modulesPath) {
-    checkExist();
+    checkExist(modulesPath);
 
     const platform = process.platform;
     let command;
@@ -98,7 +98,7 @@ function status(modulesPath) {
 }
 
 function ignore(modulesPath) {
-    checkExist();
+    checkExist(modulesPath);
 
     // shell command
     const platform = process.platform;
@@ -150,7 +150,7 @@ function ignore(modulesPath) {
 }
 
 function reset(modulesPath) {
-    checkExist();
+    checkExist(modulesPath);
 
     // shell command
     const platform = process.platform;
