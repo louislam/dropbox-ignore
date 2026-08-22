@@ -1,7 +1,7 @@
 {
     "tasks": {
         "dev": "deno run --check --allow-all main.ts",
-        "compile": "deno compile --output di --check --allow-all main.ts",
+        "compile": "deno compile --engine quickjs --output di --check --allow-all main.ts",
         "test": "deno test --allow-all --check "
     },
     "fmt": {
