@@ -1,21 +1,22 @@
+#!/usr/bin/env node
 import childProcess from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { sync as commandExistsSync } from "command-exists";
+import commandExists from "command-exists";
 
-try {
+export function runCli(argv: string[] = process.argv) {
     const cwd = process.cwd();
     let folder = "node_modules";
 
-    if (process.argv.length > 3) {
-        folder = process.argv[3];
+    if (argv.length > 3) {
+        folder = argv[3];
     }
 
     let action = "ignore";
 
-    if (process.argv.length > 2) {
-        action = process.argv[2];
+    if (argv.length > 2) {
+        action = argv[2];
     }
 
     const targetPath = path.join(cwd, folder);
@@ -32,9 +33,15 @@ try {
         console.log("Default folder: node_modules");
         console.log("Default action: ignore");
     }
-} catch (error) {
-    if (error instanceof Error) {
-        console.log(`Error: ${error.message}`);
+}
+
+if (import.meta.main) {
+    try {
+        runCli();
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(`Error: ${error.message}`);
+        }
     }
 }
 
@@ -78,7 +85,7 @@ export function status(targetPath: string) {
  */
 export function constructPowerShellCommand(args: string[]) {
     let command;
-    if (commandExistsSync("pwsh")) {
+    if (commandExists.sync("pwsh")) {
         command = "pwsh";
         args = [
             "-Command",
@@ -145,7 +152,7 @@ export function reset(targetPath: string) {
     }
 }
 
-function checkExist(targetPath: string) {
+export function checkExist(targetPath: string) {
     const exist = fs.existsSync(targetPath);
     if (!exist) {
         throw new Error(`The directory does not exist in this location - ${targetPath}`);

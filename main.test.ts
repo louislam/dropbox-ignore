@@ -1,9 +1,9 @@
-import { assertEquals } from "@std/assert";
+import assert from "node:assert/strict";
 import fs from "node:fs";
+import { test } from "node:test";
 import { ignore, reset, status } from "./main.ts";
 
-// No assertion in this test, checking the result manually
-Deno.test("test status", () => {
+test("test status", () => {
     if (!fs.existsSync("test_temp")) {
         fs.mkdirSync("test_temp");
     }
@@ -26,13 +26,8 @@ Deno.test("test status", () => {
 
     fs.rmdirSync("test_temp");
 
-    try {
-        status("test_temp_fail");
-    } catch (error) {
-        if (error instanceof Error) {
-            assertEquals(error.message, "The directory does not exist in this location - test_temp_fail");
-        } else {
-            throw error;
-        }
-    }
+    assert.throws(
+        () => status("test_temp_fail"),
+        { message: "The directory does not exist in this location - test_temp_fail" },
+    );
 });

@@ -1,0 +1,29 @@
+{
+  "name": "dropbox-ignore",
+  "version": "1.0.0",
+  "description": "For Windows only: mark a folder (e.g. node_modules) as ignored by Dropbox.",
+  "type": "module",
+  "bin": {
+    "di": "./main.ts",
+    "dropignore": "./main.ts"
+  },
+  "scripts": {
+    "dev": "node main.ts",
+    "test": "node --test",
+    "dev-install": "npm link",
+    "dev-uninstall": "npm unlink -g dropbox-ignore"
+  },
+  "keywords": [
+    "dropbox",
+    "ignore",
+    "node_modules",
+    "windows"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=23.6"
+  },
+  "dependencies": {
+    "command-exists": "1.2.9"
+  }
+}

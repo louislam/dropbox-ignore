@@ -5,7 +5,7 @@ For Windows only
 ## Usage
 
 ```
-Usage: di.exe [status|ignore|reset] [folder]
+Usage: di [status|ignore|reset] [folder]
 Default folder: node_modules
 Default action: ignore
 ```
